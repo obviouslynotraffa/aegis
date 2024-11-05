@@ -4,3 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+clap = "4.5.20"
+image = "0.25.4"
+tracing = "0.1.40"
