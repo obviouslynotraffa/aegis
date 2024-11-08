@@ -1,24 +1,28 @@
 pub mod encoder;
 pub mod decoder;
+pub mod cli;
 
 use encoder::Encoder;
 use decoder::Decoder;
+use cli::Cli;
+use clap::Parser;
 use std::io;
 
 
 fn main() -> io::Result<()> {
 
-    let img_path = "some_path.png";
-    let output_path = "modified_img.png";
-    let message = "Super secret message";
+    let args = Cli::parse();
 
-    let encoder = Encoder::new(img_path, output_path, message);
-    encoder.encode()?;
-
-    let decoder = Decoder::new(output_path);
-    let decoded_message = decoder.decode();
-
-    println!("Decoded message: {}", decoded_message);
-
+    if args.encode {
+        let output_path = args.output_path.unwrap();
+        let message = args.message.unwrap();
+        let encoder = Encoder::new(&args.img_path, &output_path, &message);
+        encoder.encode()?;
+    } else if args.decode {
+        let decoder = Decoder::new(&args.img_path);
+        let decoded_message = decoder.decode();
+        println!("Decoded message: {}", decoded_message);
+    }
+ 
     Ok(())
 }
