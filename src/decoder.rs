@@ -16,6 +16,7 @@ impl Decoder {
 
         let mut message_bits: Vec<u8> = Vec::new();
 
+        // Decode message from image
         for (_, _, pixel) in img_buffer.enumerate_pixels() {
             for i in 0..4 {
                 message_bits.push(pixel[i] & 1);
@@ -23,6 +24,8 @@ impl Decoder {
         }
 
         let mut message_bytes: Vec<u8> = Vec::new();
+        
+        // Convert bits to bytes
         for bits in message_bits.chunks(8) {
             let byte = bits.iter().fold(0, |acc, &bit| (acc << 1) | bit);
             if byte == 0 {

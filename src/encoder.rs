@@ -22,6 +22,7 @@ impl<'a> Encoder<'a> {
         let (width, height) = self.img.dimensions();
         let mut img_buffer = self.img.to_rgba8();
 
+        // Convert message to bits
         let mut message_bits: Vec<u8> = self
             .message
             .bytes()
@@ -37,6 +38,7 @@ impl<'a> Encoder<'a> {
             ));
         }
 
+        // Encode message in image
         let mut bit_index = 0;
         for (_, _, pixel) in img_buffer.enumerate_pixels_mut() {
             for i in 0..4 {
@@ -47,9 +49,10 @@ impl<'a> Encoder<'a> {
             }
         }
 
+        // Save image
         img_buffer
             .save(self.output_path)
-            .expect("Errore nel salvataggio dell'immagine.");
+            .expect("Error saving image");
 
         Ok(())
     }
