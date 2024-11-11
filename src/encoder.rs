@@ -1,7 +1,6 @@
 use image::{DynamicImage, GenericImageView};
 use std::io;
 
-
 pub struct Encoder<'a> {
     img: DynamicImage,
     output_path: &'a str,
@@ -11,7 +10,7 @@ pub struct Encoder<'a> {
 impl<'a> Encoder<'a> {
     pub fn new(img_path: &'a str, output_path: &'a str, message: &'a str) -> Self {
         let img = image::open(img_path).expect("Error opening image");
-        
+
         Encoder {
             img,
             output_path,
@@ -20,19 +19,22 @@ impl<'a> Encoder<'a> {
     }
 
     pub fn encode(&self) -> io::Result<()> {
-
         let (width, height) = self.img.dimensions();
         let mut img_buffer = self.img.to_rgba8();
 
-        let mut message_bits: Vec<u8> = self.message
-        .bytes()
-        .flat_map(|byte| (0..8).rev().map(move |i| (byte >> i) & 1))
-        .collect();
+        let mut message_bits: Vec<u8> = self
+            .message
+            .bytes()
+            .flat_map(|byte| (0..8).rev().map(move |i| (byte >> i) & 1))
+            .collect();
 
         message_bits.extend(vec![0; 8]);
 
         if message_bits.len() > (width * height * 4) as usize {
-            return Err(io::Error::new(io::ErrorKind::InvalidInput, "Message is too long"));
+            return Err(io::Error::new(
+                io::ErrorKind::InvalidInput,
+                "Message is too long",
+            ));
         }
 
         let mut bit_index = 0;
@@ -45,7 +47,9 @@ impl<'a> Encoder<'a> {
             }
         }
 
-        img_buffer.save(self.output_path).expect("Errore nel salvataggio dell'immagine.");
+        img_buffer
+            .save(self.output_path)
+            .expect("Errore nel salvataggio dell'immagine.");
 
         Ok(())
     }

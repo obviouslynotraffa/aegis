@@ -1,16 +1,14 @@
-pub mod encoder;
-pub mod decoder;
 pub mod cli;
+pub mod decoder;
+pub mod encoder;
 
-use encoder::Encoder;
-use decoder::Decoder;
-use cli::Cli;
 use clap::Parser;
+use cli::Cli;
+use decoder::Decoder;
+use encoder::Encoder;
 use std::io;
 
-
 fn main() -> io::Result<()> {
-
     let args = Cli::parse();
 
     if args.encode {
@@ -23,6 +21,6 @@ fn main() -> io::Result<()> {
         let decoded_message = decoder.decode();
         println!("Decoded message: {}", decoded_message);
     }
- 
+
     Ok(())
 }
