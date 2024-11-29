@@ -6,7 +6,7 @@ pub struct Decoder {
 
 impl Decoder {
     pub fn new(img_path: &str) -> Self {
-        let img = image::open(img_path).expect("Errore nell'apertura dell'immagine.");
+        let img = image::open(img_path).expect("Failed to open image");
 
         Decoder { img }
     }

@@ -12,7 +12,7 @@ fn main() -> io::Result<()> {
     let args = Cli::parse();
 
     if args.encode {
-        let output_path = args.output_path.unwrap();
+        let output_path = args.output_path.as_deref().unwrap_or("");
         let message = args.message.unwrap();
         let encoder = Encoder::new(&args.img_path, &output_path, &message);
         encoder.encode()?;
